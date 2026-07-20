@@ -75,9 +75,9 @@ cycle *t+1*, `res_valid` is 1 and `res` carries the rounded, saturated
 snapshot. `res_valid` is exactly one cycle wide per `rd`. Between readouts,
 `res` **holds** its last value; it does not clear when `res_valid` is low.
 Back-to-back `rd` cycles are permitted and each takes its own snapshot.
-Some readout designs introduce unintended extra latency. The entire readout
-path — from sampling `rd` to `res_valid` pulsing — must add exactly one
-clock cycle of latency.
+The read interface shall have a single-cycle latency.
+The result and valid indication corresponding to a read request must
+appear exactly one clock after `rd` is asserted.
 
 Worked examples (`snapshot → res`):
 
