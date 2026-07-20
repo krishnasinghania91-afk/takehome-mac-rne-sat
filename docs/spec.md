@@ -87,6 +87,8 @@ Worked examples (`snapshot → res`):
 **Latency Requirement** 
 The entire readout path — from sampling rd to res_valid pulsing — must add exactly one clock cycle of latency. res and res_valid should be the only registered elements in this path; the rounding and saturation arithmetic should be computed combinationally from the accumulator's current value in the same cycle rd is sampled, then registered directly into res/res_valid. Do not introduce an intermediate register to hold the snapshot before rounding — that adds a second cycle of latency and makes res_valid pulse two cycles after rd instead of one.
 
+res_valid must be assigned directly from rd in the same always_ff block (e.g. res_valid <= rd;), not from any other registered/delayed copy of rd. There must be exactly one flip-flop between the rd input and the res_valid output — count the registers in that signal's path if unsure.
+
 Example-
 If rd is sampled at cycle N, res_valid must be 1 at cycle N+1, not N+2.
 
