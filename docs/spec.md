@@ -84,9 +84,6 @@ Worked examples (`snapshot → res`):
 | 896      | 3  | 128 | 4   | tie, q odd → rounds up    |
 | −384     | −2 | 128 | −2  | tie, q even → stays       |
 
-**Latency Requirement** 
-The entire readout path — from sampling rd to res_valid pulsing — must add exactly one clock cycle of latency. res and res_valid should be the only registered elements in this path; the rounding and saturation arithmetic should be computed combinationally from the accumulator's current value in the same cycle rd is sampled, then registered directly into res/res_valid.
-
 ## 5. Overflow flag
 
 `ovf` is a registered, sticky flag:
