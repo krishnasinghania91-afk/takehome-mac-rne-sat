@@ -76,6 +76,8 @@ snapshot. `res_valid` is exactly one cycle wide per `rd`. Between readouts,
 `res` **holds** its last value; it does not clear when `res_valid` is low.
 Back-to-back `rd` cycles are permitted and each takes its own snapshot.
 Some readout designs introduce unintended extra latency.
+Avoid adding an extra register stage for `res`/`res_valid` beyond the
+one-cycle registered outputs already required.
 
 Worked examples (`snapshot → res`):
 
