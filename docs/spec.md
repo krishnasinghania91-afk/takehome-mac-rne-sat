@@ -56,6 +56,7 @@ the end of cycle *t−1* — that is, **before** any accumulator update
 snapshot. A `clr` asserted in the same cycle as `rd` clears the accumulator
 **after** the snapshot is taken (the readout returns the pre-clear value).
 
+
 **Rounding — round-half-to-even at the 8 LSBs.** Let
 `q = floor(snapshot / 256)` and `r = snapshot − 256·q`, so that
 `0 ≤ r ≤ 255` — including for negative snapshots. The rounded value is:
@@ -82,6 +83,12 @@ Worked examples (`snapshot → res`):
 | 640      | 2  | 128 | 2   | tie, q even → stays       |
 | 896      | 3  | 128 | 4   | tie, q odd → rounds up    |
 | −384     | −2 | 128 | −2  | tie, q even → stays       |
+
+**Latency Requirement** 
+The entire readout path — from sampling rd to res_valid pulsing — must add exactly one clock cycle of latency. res and res_valid should be the only registered elements in this path; the rounding and saturation arithmetic should be computed combinationally from the accumulator's current value in the same cycle rd is sampled, then registered directly into res/res_valid. Do not introduce an intermediate register to hold the snapshot before rounding — that adds a second cycle of latency and makes res_valid pulse two cycles after rd instead of one.
+
+Example-
+If rd is sampled at cycle N, res_valid must be 1 at cycle N+1, not N+2.
 
 ## 5. Overflow flag
 
