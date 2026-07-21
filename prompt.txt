@@ -6,6 +6,7 @@ Requirements:
 - No SystemVerilog Assertions (SVA).
 - Keep the module name, port names, directions, and widths exactly as in
   the provided skeleton.
+- Be careful not to over-pipeline the readout outputs.
 - You may write and run your own tests, but grading is performed by a
   hidden testbench that checks cycle-exact behavior against docs/spec.md.
 
