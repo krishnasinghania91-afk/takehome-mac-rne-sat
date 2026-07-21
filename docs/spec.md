@@ -78,6 +78,8 @@ Back-to-back `rd` cycles are permitted and each takes its own snapshot.
 Some readout designs introduce unintended extra latency.
 Avoid adding an extra register stage for `res`/`res_valid` beyond the
 one-cycle registered outputs already required.
+If `rd` is high in cycle *t*, then in cycle *t+1* `res_valid` is high and
+`res` holds the corresponding result. There is no additional delay beyond that.
 
 Worked examples (`snapshot → res`):
 
