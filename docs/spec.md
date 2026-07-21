@@ -85,12 +85,11 @@ Worked examples (`snapshot → res`):
 | −384     | −2 | 128 | −2  | tie, q even → stays       |
 
 **Latency Requirement**
-The entire readout path — from sampling rd to res_valid pulsing — must add exactly one clock cycle of latency. res and res_valid should be the only registered elements in this path; the rounding and saturation arithmetic should be computed combinationally from the accumulator's current value in the same cycle rd is sampled, then registered directly into res/res_valid. Do not introduce an intermediate register to hold the snapshot before rounding — that adds a second cycle of latency and makes res_valid pulse two cycles after rd instead of one.
+Avoid adding an extra register stage for res/res_valid beyond the one-cycle registered outputs already required.
+If rd is high in cycle t, then in cycle t+1 res_valid is high and res holds the corresponding result. There is no additional delay beyond that.
 
-res_valid must be assigned directly from rd in the same always_ff block (e.g. res_valid <= rd;), not from any other registered/delayed copy of rd. There must be exactly one flip-flop between the rd input and the res_valid output — count the registers in that signal's path if unsure.
+This log dies on cycle 2 for res_valid. Rounding, clr+en, saturation, etc. were never reached. Until latency failures drop, more RNE/ovf text won’t move this class of fail.
 
-Example-
-If rd is sampled at cycle N, res_valid must be 1 at cycle N+1, not N+2.
 
 ## 5. Overflow flag
 
